@@ -1,7 +1,8 @@
 export interface MajorElm {
-  name: string;
-  faculty: string;
+  majorId: string;
+  majorName: string;
+  facultyId: string;
   position: number;
-  type: 'Бакалавър' | 'Магистър';
-  subtype: 'редовно' | 'задочно';
+  courseType: string;
+  courseSubtype: string;
 }

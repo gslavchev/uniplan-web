@@ -4,10 +4,7 @@ import { ViewService } from './view.service';
 import { CommonModule } from '@angular/common';
 import { MajorOptions } from '../../../features/major/major-options/major-options';
 import { FacultyTable } from '../../../features/faculty/faculty-table/faculty-table';
-import {
-  MajorTable,
-  ELEMENT_DATA,
-} from '../../../features/major/major-table/major-table';
+import { MajorTable } from '../../../features/major/major-table/major-table';
 import { MajorFilters } from '../../../features/major/major-filters/major-filters';
 import { StudentOptions } from '../../../features/student/student-options/student-options';
 import {
@@ -15,6 +12,7 @@ import {
   StudentTable,
 } from '../../../features/student/student-table/student-table';
 import { StudentFilters } from '../../../features/student/student-filters/student-filters';
+import { MajorElm } from '../../interfaces/major-elm';
 
 @Component({
   selector: 'app-main-panel',
@@ -42,7 +40,7 @@ export class MainPanel {
     });
   }
 
-  majors = ELEMENT_DATA;
+  majors: MajorElm[] = [];
   students = ELEMENT_STUDENT_DATA;
 
   searchText = '';
