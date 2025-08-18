@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject, switchMap } from 'rxjs';
 import { MajorElm } from '../../core/interfaces/major-elm';
 
 @Injectable({
@@ -8,6 +8,10 @@ import { MajorElm } from '../../core/interfaces/major-elm';
 })
 export class MajorService {
   private apiUrl = 'http://localhost:8080/majors/all';
+  private apiUrlMajor = 'http://localhost:8080/majors';
+  private apiUrlCourse = 'http://localhost:8080/courses';
+
+  refreshNeeded = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +21,7 @@ export class MajorService {
         majors.map((major, index) => ({
           majorId: major.majorId,
           majorName: major.majorName,
+          courseId: major.courseId,
           facultyId: major.facultyId,
           courseType: major.courseType,
           courseSubtype: major.courseSubtype,
@@ -26,20 +31,78 @@ export class MajorService {
     );
   }
 
-  deleteMajor(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+  createMajor(createMajor: {
+    facultyId: string;
+    majorName: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrlMajor}`, createMajor).pipe(
       map((res) => {
+        this.refreshNeeded.next();
         return res;
       })
     );
   }
 
+  createCourse(course: {
+    majorId: string;
+    courseYear: number;
+    courseType: string;
+    courseSubtype: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrlCourse}`, course).pipe(
+      map((res) => {
+        this.refreshNeeded.next();
+        return res;
+      })
+    );
+  }
+  createMajorWithCourse(majorData: {
+    facultyId: string;
+    majorName: string;
+    type: string;
+    subtype: string;
+  }): Observable<any> {
+    return this.createMajor({
+      facultyId: majorData.facultyId,
+      majorName: majorData.majorName,
+    }).pipe(
+      switchMap((createdMajor: any) => {
+        return this.createCourse({
+          majorId: createdMajor.id,
+          courseType: majorData.type,
+          courseSubtype: majorData.subtype,
+          courseYear: 1,
+        });
+      })
+    );
+  }
+
+  deleteMajor(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrlMajor}/${id}`).pipe(
+      map((res) => {
+        this.refreshNeeded.next();
+        return res;
+      })
+    );
+  }
+
+  deleteCourse(courseId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrlCourse}/${courseId}`);
+  }
+
+  deleteMajorWithCourse(major: MajorElm): Observable<any> {
+    return this.deleteCourse(major.courseId).pipe(
+      switchMap(() => this.deleteMajor(major.majorId))
+    );
+  }
+
   editMajor(
     id: string,
-    updateMajor: { name: string; faculty: string }
+    updateMajor: { facultyId: string; majorName: string }
   ): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, updateMajor).pipe(
+    return this.http.put(`${this.apiUrlMajor}/${id}`, updateMajor).pipe(
       map((res) => {
+        this.refreshNeeded.next();
         return res;
       })
     );

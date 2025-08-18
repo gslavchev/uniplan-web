@@ -1,8 +1,9 @@
 export interface MajorElm {
   majorId: string;
-  majorName: string;
+  courseId: string;
   facultyId: string;
-  position: number;
+  majorName: string;
   courseType: string;
   courseSubtype: string;
+  position: number;
 }

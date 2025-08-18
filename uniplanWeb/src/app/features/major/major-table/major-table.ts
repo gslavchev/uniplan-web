@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -17,7 +17,7 @@ import { FacultyService } from '../../faculty/faculty-service';
   templateUrl: './major-table.html',
   styleUrl: './major-table.scss',
 })
-export class MajorTable implements OnChanges {
+export class MajorTable implements OnInit {
   displayedColumns: string[] = [
     'position',
     'name',
@@ -26,8 +26,14 @@ export class MajorTable implements OnChanges {
     'subtype',
     'actions',
   ];
+
   dataSource: MajorElm[] = [];
   facultyMap = new Map<string, string>();
+
+  @Input() searchText = '';
+  @Input() faculty: string = '';
+  @Input() type: string = '';
+  @Input() subtype: string = '';
 
   constructor(
     private dialog: MatDialog,
@@ -35,51 +41,19 @@ export class MajorTable implements OnChanges {
     private facultyService: FacultyService
   ) {}
 
-  onEdit(element: MajorElm): void {
-    this.dialog.open(MajorEditForm, {
-      data: {
-        name: element.majorName,
-        faculty: element.facultyId,
-      },
-    });
-  }
-
-  onDelete(element: MajorElm): void {
-    this.dialog.open(MajorDeleteForm, {
-      data: {
-        id: element.majorId,
-        name: element.majorName,
-      },
-    });
-  }
-
-  @Input() searchText = '';
-
-  @Input() faculty: string = '';
-  @Input() type: string = '';
-  @Input() subtype: string = '';
-
-  @Input() faculties: string[] = [];
-  @Input() types: string[] = [];
-  @Input() subtypes: string[] = [];
-
-  originalData: MajorElm[] = [];
-  dataSourceFilter: MajorElm[] = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.applyFilters();
-  }
-
   ngOnInit(): void {
     this.loadMajors();
     this.loadFaculties();
+
+    this.service.refreshNeeded.subscribe(() => {
+      this.loadMajors();
+      this.loadFaculties();
+    });
   }
 
   loadMajors(): void {
     this.service.getMajors().subscribe((data) => {
       this.dataSource = data;
-      this.originalData = data;
-      this.applyFilters();
     });
   }
 
@@ -93,28 +67,8 @@ export class MajorTable implements OnChanges {
     return this.facultyMap.get(id) || '—';
   }
 
-  applyFilters(): void {
-    this.dataSourceFilter = this.originalData.filter((el) => {
-      const matchesFaculty = !this.faculty || el.facultyId === this.faculty;
-      const matchesType = !this.type || el.courseType === this.type;
-      const matchesSubtype = !this.subtype || el.courseSubtype === this.subtype;
-      const matchesSearch =
-        !this.searchText ||
-        el.majorName.toLowerCase().includes(this.searchText.toLowerCase());
-
-      return matchesFaculty && matchesType && matchesSubtype && matchesSearch;
-    });
-  }
-  static getFilterOptions(data: MajorElm[]) {
-    return {
-      faculties: [...new Set(data.map((e) => e.facultyId))],
-      types: [...new Set(data.map((e) => e.courseType))],
-      subtypes: [...new Set(data.map((e) => e.courseSubtype))],
-    };
-  }
-
   get filteredMajors(): MajorElm[] {
-    return this.originalData.filter((major) => {
+    return this.dataSource.filter((major) => {
       const matchesFaculty = !this.faculty || major.facultyId === this.faculty;
       const matchesType = !this.type || major.courseType === this.type;
       const matchesSubtype =
@@ -125,5 +79,34 @@ export class MajorTable implements OnChanges {
 
       return matchesFaculty && matchesType && matchesSubtype && matchesSearch;
     });
+  }
+
+  onEdit(element: MajorElm): void {
+    this.dialog.open(MajorEditForm, {
+      data: {
+        id: element.majorId,
+        majorName: element.majorName,
+        facultyId: element.facultyId,
+      },
+    });
+  }
+
+  onDelete(element: MajorElm): void {
+    this.dialog.open(MajorDeleteForm, {
+      data: {
+        id: element.majorId,
+        courseId: element.courseId,
+        majorName: element.majorName,
+        facultyId: element.facultyId,
+      },
+    });
+  }
+
+  static getFilterOptions(data: MajorElm[]) {
+    return {
+      faculties: [...new Set(data.map((e) => e.facultyId))],
+      types: [...new Set(data.map((e) => e.courseType))],
+      subtypes: [...new Set(data.map((e) => e.courseSubtype))],
+    };
   }
 }

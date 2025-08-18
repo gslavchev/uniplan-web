@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { InputFilter } from '../../../core/shared/input-filter/input-filter';
+import { FacultyService } from '../../faculty/faculty-service';
 
 @Component({
   selector: 'app-major-filters',

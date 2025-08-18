@@ -7,7 +7,11 @@
 
     <mat-form-field appearance="fill">
         <mat-label>Факултет:</mat-label>
-        <input matInput [(ngModel)]="faculty" />
+        <mat-select [(ngModel)]="facultyId">
+            <mat-option *ngFor="let fac of faculties" [value]="fac.id">
+                {{ fac.facultyName }}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
 
 </app-edit-form>
