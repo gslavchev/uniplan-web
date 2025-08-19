@@ -2,8 +2,18 @@
     <mat-label>{{ label }}</mat-label>
     <mat-select [value]="selected" (selectionChange)="onChange($event.value)">
         <mat-option value>Всички</mat-option>
-        <mat-option *ngFor="let option of options" [value]="option">
-            {{ option }}
-        </mat-option>
+
+        <ng-container *ngIf="isObjectMode(); else stringMode">
+            <mat-option *ngFor="let option of objectOptions"
+                [value]="option.id">
+                {{ option.name }}
+            </mat-option>
+        </ng-container>
+
+        <ng-template #stringMode>
+            <mat-option *ngFor="let option of options" [value]="option">
+                {{ option }}
+            </mat-option>
+        </ng-template>
     </mat-select>
 </mat-form-field>

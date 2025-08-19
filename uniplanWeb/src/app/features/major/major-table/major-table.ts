@@ -102,11 +102,15 @@ export class MajorTable implements OnInit {
     });
   }
 
-  static getFilterOptions(data: MajorElm[]) {
-    return {
-      faculties: [...new Set(data.map((e) => e.facultyId))],
-      types: [...new Set(data.map((e) => e.courseType))],
-      subtypes: [...new Set(data.map((e) => e.courseSubtype))],
-    };
+  static getFilterOptions(data: MajorElm[], facultyMap: Map<string, string>) {
+    const faculties = [...new Set(data.map((e) => e.facultyId))].map((id) => ({
+      id,
+      name: facultyMap.get(id) || '—',
+    }));
+
+    const types = [...new Set(data.map((e) => e.courseType))];
+    const subtypes = [...new Set(data.map((e) => e.courseSubtype))];
+
+    return { faculties, types, subtypes };
   }
 }

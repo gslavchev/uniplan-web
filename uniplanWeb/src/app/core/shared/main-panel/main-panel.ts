@@ -14,6 +14,7 @@ import {
 import { StudentFilters } from '../../../features/student/student-filters/student-filters';
 import { MajorElm } from '../../interfaces/major-elm';
 import { MajorService } from '../../../features/major/major-service';
+import { FacultyService } from '../../../features/faculty/faculty-service';
 
 @Component({
   selector: 'app-main-panel',
@@ -48,13 +49,16 @@ export class MainPanel {
   selectedType = '';
   selectedSubtype = '';
 
-  faculties: string[] = [];
+  faculties: { id: string; name: string }[] = [];
   types: string[] = [];
   subtypes: string[] = [];
 
+  private facultyMap = new Map<string, string>();
+
   constructor(
     private viewService: ViewService,
-    private majorService: MajorService
+    private majorService: MajorService,
+    private facultyService: FacultyService
   ) {
     this.viewService.currentView$.subscribe((view) => {
       this.currentView = view;
@@ -75,12 +79,21 @@ export class MainPanel {
   }
 
   private loadMajorFilters(): void {
-    this.majorService.getMajors().subscribe((data) => {
-      this.majors = data;
-      const filterOptionsMajor = MajorTable.getFilterOptions(this.majors);
-      this.faculties = filterOptionsMajor.faculties;
-      this.types = filterOptionsMajor.types;
-      this.subtypes = filterOptionsMajor.subtypes;
+    this.facultyService.getFaculties().subscribe((faculties) => {
+      this.facultyMap = new Map(faculties.map((f) => [f.id, f.facultyName]));
+
+      this.majorService.getMajors().subscribe((data) => {
+        this.majors = data;
+
+        const filterOptionsMajor = MajorTable.getFilterOptions(
+          this.majors,
+          this.facultyMap
+        );
+
+        this.faculties = filterOptionsMajor.faculties;
+        this.types = filterOptionsMajor.types;
+        this.subtypes = filterOptionsMajor.subtypes;
+      });
     });
   }
 

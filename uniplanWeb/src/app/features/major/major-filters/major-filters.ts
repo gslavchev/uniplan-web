@@ -24,7 +24,8 @@ import { FacultyService } from '../../faculty/faculty-service';
 export class MajorFilters {
   @Input() internalSearchText = '';
 
-  @Input() faculties: string[] = [];
+  @Input() faculties: { id: string; name: string }[] = [];
+
   @Input() types: string[] = [];
   @Input() subtypes: string[] = [];
 
