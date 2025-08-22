@@ -1,0 +1,31 @@
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+button {
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  font-weight: 510;
+  transition: background-color 0.3s ease;
+  margin: 1%;
+  padding: 3.5%;
+}
+
+.exitButton {
+  background: linear-gradient(90deg, #ff2020, #ff8533);
+}
+
+.exitButton:hover {
+  background: linear-gradient(90deg, #e60000, #ff6600);
+}
+
+.saveButton {
+  background: linear-gradient(90deg, #4776e6, #8e54e9);
+}
+
+.saveButton:hover {
+  background: linear-gradient(90deg, #365edb, #7d45e5);
+}

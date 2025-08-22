@@ -1,0 +1,82 @@
+<div class="table-wrapper">
+  <table mat-table [dataSource]="filteredMajors"
+         class="mat-elevation-z8 table-header">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef class="col-position"> No.
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef class="col-name"> Специалност
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="faculty">
+      <th mat-header-cell *matHeaderCellDef class="col-faculty"> Факултет
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef class="col-type"> Тип
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="subtype">
+      <th mat-header-cell *matHeaderCellDef class="col-subtype"> Форма на
+        обучение
+      </th>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="col-actions"> Действия
+      </th>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  </table>
+
+  <div class="scrollable-body">
+    <table mat-table [dataSource]="filteredMajors"
+           class="mat-elevation-z8 table-body">
+      <ng-container matColumnDef="position">
+        <td mat-cell *matCellDef="let element" class="col-position">
+          {{element.position}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <td mat-cell *matCellDef="let element" class="col-name">
+          {{element.majorName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="faculty">
+        <td mat-cell *matCellDef="let element" class="col-faculty">
+          {{ getFacultyName(element.facultyId) }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <td mat-cell *matCellDef="let element" class="col-type">
+          {{element.courseType}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="subtype">
+        <td mat-cell *matCellDef="let element" class="col-subtype">
+          {{element.courseSubtype}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <td mat-cell *matCellDef="let element" class="col-actions">
+          <button mat-icon-button color="primary"
+                  (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn"
+                  (click)="onDelete(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

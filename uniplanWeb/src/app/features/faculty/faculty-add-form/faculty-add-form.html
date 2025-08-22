@@ -1,0 +1,24 @@
+<app-add-form title="Добави Факултет" (saveClicked)="save()">
+    <mat-dialog-content>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Име:</mat-label>
+            <input matInput [(ngModel)]="facultyName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Локация:</mat-label>
+            <input matInput [(ngModel)]="location" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Университет:</mat-label>
+            <mat-select [(ngModel)]="universityId">
+                <mat-option *ngFor="let uni of universities" [value]="uni.id">
+                    {{uni.uniName}})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </mat-dialog-content>
+</app-add-form>

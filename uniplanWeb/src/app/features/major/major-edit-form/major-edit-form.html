@@ -1,0 +1,17 @@
+<app-edit-form title="Редактирай Специалност" (saveClicked)="save()">
+
+    <mat-form-field appearance="fill">
+        <mat-label>Име:</mat-label>
+        <input matInput [(ngModel)]="majorName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Факултет:</mat-label>
+        <mat-select [(ngModel)]="facultyId">
+            <mat-option *ngFor="let fac of faculties" [value]="fac.id">
+                {{ fac.facultyName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</app-edit-form>

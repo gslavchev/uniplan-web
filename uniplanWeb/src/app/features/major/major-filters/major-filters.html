@@ -1,0 +1,30 @@
+<div class="filters-panel">
+    <app-input-filter
+        [label]="'Специалност'"
+        [(searchText)]="internalSearchText"
+        (searchTextChange)="searchTextChange.emit($event)">
+    </app-input-filter>
+    <app-filters-form
+        [label]="'Факултет'"
+        [objectOptions]="faculties"
+        [selected]="selectedFaculty"
+        (selectionChange)="facultyChange.emit($event)"
+        class="filter">
+    </app-filters-form>
+
+    <app-filters-form
+        [label]="'Тип'"
+        [options]="types"
+        [selected]="selectedType"
+        (selectionChange)="typeChange.emit($event)"
+        class="filter">
+    </app-filters-form>
+
+    <app-filters-form
+        [label]="'Форма на обучение'"
+        [options]="subtypes"
+        [selected]="selectedSubtype"
+        (selectionChange)="subtypeChange.emit($event)"
+        class="filter">
+    </app-filters-form>
+</div>

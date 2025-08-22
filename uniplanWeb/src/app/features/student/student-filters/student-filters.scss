@@ -1,0 +1,14 @@
+.filters-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1%;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  height: auto;
+  padding: 0 10px;
+}
+
+::ng-deep .mat-form-field-infix {
+  padding: 4px 0 !important;
+}

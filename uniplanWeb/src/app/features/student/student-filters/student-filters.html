@@ -1,0 +1,24 @@
+<div class="filters-panel">
+    <app-input-filter
+        [label]="'Име'"
+        [(searchText)]="internalSearchText"
+        (searchTextChange)="searchTextChange.emit($event)">></app-input-filter>
+
+    <app-input-filter
+        [label]="'Факултетен номер'"
+        [(searchText)]="internalSearchFacNum"
+        (searchTextChange)="searchFacNumChange.emit($event)">></app-input-filter>
+
+    <app-input-filter
+        [label]="'Специалност'"
+        [(searchText)]="internalSearchMajor"
+        (searchTextChange)="searchMajorChange.emit($event)">></app-input-filter>
+
+    <app-filters-form
+        [label]="'Форма на обучение'"
+        [options]="subtypes"
+        [selected]="selectedSubtype"
+        (selectionChange)="subtypeChange.emit($event)"
+        class="filter">
+    </app-filters-form>
+</div>

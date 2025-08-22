@@ -1,0 +1,58 @@
+.mainPanel {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.components-wrapper {
+  position: relative;
+  margin-left: 8%;
+  margin-right: 13%;
+  max-width: 2000px;
+  width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    margin-left: 5%;
+    padding-left: 1%;
+    margin-right: 5%;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin-left: 2%;
+    padding-left: 1%;
+    margin-right: 2%;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-left: 1%;
+    padding-left: 1%;
+    margin-right: 1%;
+  }
+}
+
+.component-panel .major .component-panel .student {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  height: 100%;
+  padding: 5px;
+  margin-top: 1%;
+}
+
+.component-panel {
+  margin-top: 4%;
+}
+
+.controls-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.options {
+  padding-bottom: 20px;
+}

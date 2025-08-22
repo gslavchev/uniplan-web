@@ -1,0 +1,26 @@
+:host ::ng-deep .small-extended-fab {
+  background-color: #fff !important;
+  color: #1976d2;
+  font-weight: 600;
+  height: 52px;
+  min-width: 110px;
+  padding: 0 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  border: none;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+:host ::ng-deep .small-extended-fab:hover {
+  background-color: #eceff2 !important;
+}
+
+:host ::ng-deep .small-extended-fab mat-icon {
+  color: #1976d2;
+  font-size: 22px;
+  margin-right: 5px;
+}

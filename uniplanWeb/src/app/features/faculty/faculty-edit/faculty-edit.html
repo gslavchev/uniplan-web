@@ -1,0 +1,15 @@
+<app-edit-form title="Редактирай факултет" (saveClicked)="save()">
+    <mat-dialog-content>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Име:</mat-label>
+            <input matInput [(ngModel)]="facultyName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Локация:</mat-label>
+            <input matInput [(ngModel)]="location" />
+        </mat-form-field>
+
+    </mat-dialog-content>
+</app-edit-form>

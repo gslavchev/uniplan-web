@@ -1,0 +1,70 @@
+<div class="mainPanel">
+    <div class="components-wrapper">
+        <ng-container *ngIf="currentView === 'faculty'">
+            <div class="component-panel faculty">
+                <app-faculty-options></app-faculty-options>
+                <app-faculty-table></app-faculty-table>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentView === 'home'">
+            <div class="component-panel home">
+                <h1>Main!</h1>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentView === 'major'">
+            <div class="component-panel major">
+                <div class="controls-row">
+                    <app-major-options class="options"></app-major-options>
+                    <app-major-filters
+                        [faculties]="faculties"
+                        [types]="types"
+                        [subtypes]="subtypes"
+                        [selectedFaculty]="selectedFaculty"
+                        [selectedType]="selectedType"
+                        [selectedSubtype]="selectedSubtype"
+                        [internalSearchText]="searchText"
+                        (facultyChange)="selectedFaculty = $event"
+                        (typeChange)="selectedType = $event"
+                        (subtypeChange)="selectedSubtype = $event"
+                        (searchTextChange)="searchText = $event">
+                    </app-major-filters>
+                </div>
+                <app-major-table
+                    [faculty]="selectedFaculty"
+                    [type]="selectedType"
+                    [subtype]="selectedSubtype"
+                    [searchText]="searchText">
+                </app-major-table>
+
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentView === 'student'">
+            <div class="component-panel student">
+                <div class="controls-row">
+                    <app-student-options class="options"></app-student-options>
+                    <app-student-filters
+                        [internalSearchText]="searchText"
+                        (searchTextChange)="searchText = $event"
+                        [internalSearchFacNum]="searchFacNum"
+                        (searchFacNumChange)="searchFacNum = $event"
+                        [internalSearchMajor]="searchMajor"
+                        (searchMajorChange)="searchMajor = $event"
+                        [subtypes]="studentSubtypes"
+                        [selectedSubtype]="selectedStudentSubtype"
+                        (subtypeChange)="selectedStudentSubtype = $event">
+                    </app-student-filters>
+                </div>
+                <app-student-table
+                    [searchText]="searchText"
+                    [searchFacNum]="searchFacNum"
+                    [searchMajor]="searchMajor"
+                    [subtype]="selectedStudentSubtype"
+                    [subtypes]="studentSubtypes">
+                </app-student-table>
+            </div>
+        </ng-container>
+    </div>
+</div>

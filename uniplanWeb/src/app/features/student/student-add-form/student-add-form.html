@@ -1,0 +1,35 @@
+<app-add-form title="Добави Студент" (saveClicked)="save()">
+    <mat-dialog-content>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Име:</mat-label>
+            <input matInput [(ngModel)]="studentName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Факултетен номер:</mat-label>
+            <input matInput [(ngModel)]="facultyNumber" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Факултет:</mat-label>
+            <input matInput [(ngModel)]="faculty" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Специалност:</mat-label>
+            <input matInput [(ngModel)]="major" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Курс:</mat-label>
+            <input matInput [(ngModel)]="course" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Тип:</mat-label>
+            <input matInput [(ngModel)]="type" />
+        </mat-form-field>
+
+    </mat-dialog-content>
+</app-add-form>
