@@ -4,10 +4,9 @@
         [(searchText)]="internalSearchText"
         (searchTextChange)="searchTextChange.emit($event)">
     </app-input-filter>
-
     <app-filters-form
         [label]="'Факултет'"
-        [options]="faculties"
+        [objectOptions]="faculties"
         [selected]="selectedFaculty"
         (selectionChange)="facultyChange.emit($event)"
         class="filter">

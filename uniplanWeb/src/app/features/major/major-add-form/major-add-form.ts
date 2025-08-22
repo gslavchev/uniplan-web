@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AddForm } from '../../../core/shared/add-form/add-form';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -9,6 +9,10 @@ import {
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MajorService } from '../major-service';
+import { FacultyElm } from '../../../core/interfaces/faculty-elm';
+import { FacultyService } from '../../faculty/faculty-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-major-add-form',
@@ -21,50 +25,58 @@ import { MatSelectModule } from '@angular/material/select';
     AddForm,
     MatFormFieldModule,
     MatSelectModule,
+    CommonModule,
   ],
   standalone: true,
   templateUrl: './major-add-form.html',
   styleUrl: './major-add-form.scss',
 })
-export class MajorAddForm {
+export class MajorAddForm implements OnInit {
   majorName = '';
   faculty = '';
   type = '';
   subtype = '';
 
-  constructor(private dialogRef: MatDialogRef<AddForm>) {}
+  faculties: FacultyElm[] = [];
+
+  constructor(
+    private dialogRef: MatDialogRef<AddForm>,
+    private majorService: MajorService,
+    private facultyService: FacultyService
+  ) {}
+
+  ngOnInit(): void {
+    this.facultyService.getFaculties().subscribe({
+      next: (data) => {
+        this.faculties = data;
+      },
+      error: (err) => console.error('Failed to load faculties', err),
+    });
+  }
 
   save() {
-    if (!this.majorName.trim()) {
-      alert('Please enter major name.');
-      return;
-    }
-    if (!this.faculty.trim()) {
-      alert('Please enter faculty.');
-      return;
-    }
-    if (!this.type.trim()) {
-      alert('Please enter type.');
-      return;
-    }
-    if (!this.subtype.trim()) {
-      alert('Please enter subtype.');
+    if (
+      !this.majorName.trim() ||
+      !this.faculty ||
+      !this.type ||
+      !this.subtype
+    ) {
+      alert('Please fill all fields.');
       return;
     }
 
-    console.log(
-      'Saving major:',
-      this.majorName,
-      this.faculty,
-      this.type,
-      this.subtype
-    );
-
-    this.dialogRef.close({
-      name: this.majorName,
-      faculty: this.faculty,
-      type: this.type,
-      subtype: this.subtype,
-    });
+    this.majorService
+      .createMajorWithCourse({
+        facultyId: this.faculty,
+        majorName: this.majorName,
+        type: this.type,
+        subtype: this.subtype,
+      })
+      .subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+        },
+        error: () => alert('Failed to create major or course.'),
+      });
   }
 }
