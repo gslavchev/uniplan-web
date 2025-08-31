@@ -28,7 +28,7 @@ export class FacultyDeleteForm {
         this.dialogRef.close(true);
       },
       error: () => {
-        alert('Възникна грешка при изтриването на факултета.');
+        alert('Delete failed');
       },
     });
   }

@@ -76,7 +76,7 @@ export class MajorAddForm implements OnInit {
         next: () => {
           this.dialogRef.close(true);
         },
-        error: () => alert('Failed to create major or course.'),
+        error: () => alert('Failed to create major.'),
       });
   }
 }

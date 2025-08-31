@@ -1,0 +1,47 @@
+<app-edit-form title="Редактирай Студент" (saveClicked)="save()">
+    <mat-form-field appearance="fill">
+        <mat-label>Име:</mat-label>
+        <input matInput [(ngModel)]="firstName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Фамилия:</mat-label>
+        <input matInput [(ngModel)]="lastName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Факултетен номер:</mat-label>
+        <input matInput [(ngModel)]="facultyNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Факултет:</mat-label>
+        <mat-select [(ngModel)]="facultyId"
+            (selectionChange)="onFacultyChange($event.value)">
+            <mat-option *ngFor="let fac of faculties" [value]="fac.id">
+                {{ fac.facultyName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Специалност:</mat-label>
+        <mat-select [(ngModel)]="majorId"
+            (selectionChange)="onMajorChange($event.value)"
+            [disabled]="!majors.length">
+            <mat-option *ngFor="let maj of majors" [value]="maj.id">
+                {{ maj.majorName }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Курс:</mat-label>
+        <mat-select [(ngModel)]="courseId" [disabled]="!courses.length">
+            <mat-option *ngFor="let cou of courses" [value]="cou.id">
+                {{ cou.courseYear }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</app-edit-form>

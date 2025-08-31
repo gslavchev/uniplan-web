@@ -10,6 +10,7 @@ export class MajorService {
   private apiUrl = 'http://localhost:8080/majors/all';
   private apiUrlMajor = 'http://localhost:8080/majors';
   private apiUrlCourse = 'http://localhost:8080/courses';
+  private apiUrlWithFaculty = 'http://localhost:8080/majors/withFac';
 
   refreshNeeded = new Subject<void>();
 
@@ -19,7 +20,7 @@ export class MajorService {
     return this.http.get<MajorElm[]>(this.apiUrl).pipe(
       map((majors) =>
         majors.map((major, index) => ({
-          majorId: major.majorId,
+          id: major.id,
           majorName: major.majorName,
           courseId: major.courseId,
           facultyId: major.facultyId,
@@ -29,6 +30,27 @@ export class MajorService {
         }))
       )
     );
+  }
+
+  getMajorWithFaculty(facultyId: string): Observable<MajorElm[]> {
+    return this.http
+      .get<MajorElm[]>(`${this.apiUrlWithFaculty}/${facultyId}`)
+      .pipe(
+        map((majors) =>
+          majors.map(
+            (major, index) => ({
+              id: major.id,
+              majorName: major.majorName,
+              courseId: major.courseId,
+              facultyId: major.facultyId,
+              courseType: major.courseType,
+              courseSubtype: major.courseSubtype,
+              position: index + 1,
+            }),
+            console.log(majors)
+          )
+        )
+      );
   }
 
   createMajor(createMajor: {
@@ -42,7 +64,6 @@ export class MajorService {
       })
     );
   }
-
   createCourse(course: {
     majorId: string;
     courseYear: number;
@@ -92,7 +113,7 @@ export class MajorService {
 
   deleteMajorWithCourse(major: MajorElm): Observable<any> {
     return this.deleteCourse(major.courseId).pipe(
-      switchMap(() => this.deleteMajor(major.majorId))
+      switchMap(() => this.deleteMajor(major.id))
     );
   }
 

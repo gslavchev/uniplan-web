@@ -1,35 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { AddForm } from '../../../core/shared/add-form/add-form';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
+import { Component, Inject, inject, OnInit } from '@angular/core';
+import { EditForm } from '../../../core/shared/edit-form/edit-form';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { FacultyService } from '../../faculty/faculty-service';
-import { FacultyElm } from '../../../core/interfaces/faculty-elm';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-import { MajorService } from '../../major/major-service';
-import { MajorElm } from '../../../core/interfaces/major-elm';
-import { StudentService } from '../student-service';
 import { CourseElm } from '../../../core/interfaces/course-elm';
+import { MajorElm } from '../../../core/interfaces/major-elm';
+import { FacultyElm } from '../../../core/interfaces/faculty-elm';
+import { FacultyService } from '../../faculty/faculty-service';
+import { MajorService } from '../../major/major-service';
+import { StudentService } from '../student-service';
 import { CourseService } from '../../course/course-service';
 
 @Component({
-  selector: 'app-student-add-form',
+  selector: 'app-student-edit',
   imports: [
+    EditForm,
     MatDialogModule,
+    MatFormField,
+    MatLabel,
     FormsModule,
     MatInputModule,
-    MatFormFieldModule,
     MatSelectModule,
+    MatOptionModule,
     CommonModule,
-    AddForm,
   ],
-  standalone: true,
-  templateUrl: './student-add-form.html',
-  styleUrl: './student-add-form.scss',
+  templateUrl: './student-edit.html',
+  styleUrl: './student-edit.scss',
 })
-export class StudentAddForm implements OnInit {
+export class StudentEdit implements OnInit {
   firstName = '';
   lastName = '';
   facultyNumber = '';
@@ -42,16 +48,31 @@ export class StudentAddForm implements OnInit {
   courses: CourseElm[] = [];
 
   constructor(
-    private dialogRef: MatDialogRef<AddForm>,
+    private dialogRef: MatDialogRef<EditForm>,
     private facultyService: FacultyService,
     private majorService: MajorService,
     private courseService: CourseService,
-    private studentService: StudentService
-  ) {}
+    private studentService: StudentService,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      studentId: string;
+      courseId: string;
+      firstName: string;
+      lastName: string;
+      facultyNumber: string;
+    }
+  ) {
+    this.courseId = data.courseId;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
+    this.facultyNumber = data.facultyNumber;
+  }
 
   ngOnInit(): void {
     this.facultyService.getFaculties().subscribe({
-      next: (data) => (this.faculties = data),
+      next: (data) => {
+        this.faculties = data;
+      },
       error: (err) => console.error('Failed to load faculties', err),
     });
   }
@@ -103,7 +124,7 @@ export class StudentAddForm implements OnInit {
     }
 
     this.studentService
-      .createStudent({
+      .editStudent(this.data.studentId, {
         firstName: this.firstName,
         lastName: this.lastName,
         facultyNumber: this.facultyNumber,
@@ -113,7 +134,9 @@ export class StudentAddForm implements OnInit {
         next: () => {
           this.dialogRef.close(true);
         },
-        error: () => alert('Failed to create student.'),
+        error: () => {
+          alert('Failed to update student.');
+        },
       });
   }
 }

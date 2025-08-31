@@ -1,5 +1,5 @@
 export interface MajorElm {
-  majorId: string;
+  id: string;
   courseId: string;
   facultyId: string;
   majorName: string;

@@ -1,9 +1,13 @@
 export interface StudentElm {
-  position: number;
-  name: string;
+  studentId: string;
+  firstName: string;
+  lastName: string;
   facultyNumber: string;
-  major: string;
-  majorType: string;
-  course: string;
-  subtype: 'редовно' | 'задочно';
+  courseId: string;
+  courseType: string;
+  courseSubType: string;
+  courseYear: number;
+  majorId: string;
+  majorName: string;
+  position: number;
 }
